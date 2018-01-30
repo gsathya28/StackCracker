@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "685512732127",
+    "firebase_url": "https://stackcracker-2ec1c.firebaseio.com",
+    "project_id": "stackcracker-2ec1c",
+    "storage_bucket": "stackcracker-2ec1c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:685512732127:android:d7f161526e9cfee5",
+        "android_client_info": {
+          "package_name": "com.clairvoyance.stackcracker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "685512732127-shkunm9iorm4th01a38uopfjb0lrcd40.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.clairvoyance.stackcracker",
+            "certificate_hash": "0d542c8c48b65b0a3dd25c58206fe1c9fa19a3fd"
+          }
+        },
+        {
+          "client_id": "685512732127-8b060mvvjdahhktqhsoa4ssu054nma6s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBQ2c52HSom8a6wYCLjbEkBXkXd4L2rc6k"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "685512732127-8b060mvvjdahhktqhsoa4ssu054nma6s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
