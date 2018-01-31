@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">StackCracker</string>
+    <string name="add_task">Add Task to Stack</string>
 </resources>
