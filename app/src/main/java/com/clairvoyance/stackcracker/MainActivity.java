@@ -1,10 +1,12 @@
 package com.clairvoyance.stackcracker;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -19,7 +21,18 @@ public class MainActivity extends AppCompatActivity {
         mainUser = new User("testID");
         ListView mainList = findViewById(R.id.mainList);
         mainList.setAdapter(new MyAdapter());
+        setButtons();
+    }
 
+    public void setButtons(){
+        Button addTask = findViewById(R.id.add_task_button);
+        addTask.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), NewTaskActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     /**
@@ -33,8 +46,13 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public String getItem(int position) {
-            return mainUser.getTasks().get(position).getId();
+            return mainUser.getTasks().get(position).getName();
         }
+
+        public String getNotes(int position){
+            return mainUser.getTasks().get(position).getNotes();
+        }
+
 
         @Override
         public long getItemId(int i) {
@@ -49,6 +67,9 @@ public class MainActivity extends AppCompatActivity {
 
             ((TextView) convertView.findViewById(android.R.id.text1))
                     .setText(getItem(position));
+            ((TextView) convertView.findViewById(android.R.id.text2))
+                    .setText(getNotes(position));
+
             return convertView;
         }
     }

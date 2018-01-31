@@ -18,7 +18,7 @@ class Task {
     private ArrayList<Task> subTasks;
 
     private String name = "Untitled Task";
-    private String notes;
+    private String notes = "No Notes";
 
     public Task(String uid){
         this.uid = uid;

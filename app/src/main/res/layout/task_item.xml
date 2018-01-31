@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
+    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:paddingLeft="8dp"
     android:paddingRight="8dp"
     android:minHeight="?android:listPreferredItemHeight"
@@ -16,8 +16,16 @@
     -->
     <TextView android:id="@android:id/text1"
         android:duplicateParentState="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1.5"
+        android:textAppearance="?android:textAppearanceMedium" />
+
+    <TextView android:id="@android:id/text2"
+        android:duplicateParentState="true"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
         android:textAppearance="?android:textAppearanceMedium" />
 
 
