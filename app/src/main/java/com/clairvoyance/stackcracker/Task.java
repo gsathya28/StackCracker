@@ -13,6 +13,7 @@ import java.util.UUID;
 class Task implements Serializable {
 
     private boolean isStack = false;
+    private boolean isFinished = false;
     private String id;
     private String uid;
     private long dateCreated;
@@ -22,13 +23,13 @@ class Task implements Serializable {
     private String name = "Untitled Task";
     private String notes = "No Notes";
 
-    public Task(String uid){
+    Task(String uid){
         this.uid = uid;
         this.id = UUID.randomUUID().toString();
         this.dateCreated = Calendar.getInstance().getTimeInMillis();
     }
 
-    public void setDateDeadline(long dateDeadline) {
+    void setDateDeadline(long dateDeadline) {
         this.dateDeadline = dateDeadline;
     }
     public void setSubTasks(ArrayList<Task> subTasks) {
@@ -40,7 +41,7 @@ class Task implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
-    public void setNotes(String notes) {
+    void setNotes(String notes) {
         this.notes = notes;
     }
 
@@ -53,7 +54,7 @@ class Task implements Serializable {
     public long getDateCreated() {
         return dateCreated;
     }
-    public long getDateDeadline() {
+    long getDateDeadline() {
         return dateDeadline;
     }
     public ArrayList<Task> getSubTasks() {
@@ -63,8 +64,8 @@ class Task implements Serializable {
     public String getName() {
         return name;
     }
-    public String getNotes() {
+    String getNotes() {
         return notes;
     }
-
+    boolean isStack() {return isStack;}
 }

@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), NewTaskActivity.class);
+                intent.putExtra(DataHandler.mainStackTaskID, true);
                 startActivity(intent);
             }
         });
@@ -59,6 +60,10 @@ public class MainActivity extends AppCompatActivity {
 
         String getNotes(int position){
             return mainUser.getTasks().get(position).getNotes();
+        }
+
+        Task getTask(int position){
+            return mainUser.getTasks().get(position);
         }
 
         String getDate(int position){
@@ -84,6 +89,21 @@ public class MainActivity extends AppCompatActivity {
                     .setText(getNotes(position));
             ((TextView) convertView.findViewById(R.id.text3))
                     .setText(getDate(position));
+
+            final Task task = getTask(position);
+
+            convertView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent;
+                    if(task.isStack()){
+                        intent = new Intent(MainActivity.this, ViewStackActivity.class);
+                    }else{
+                        intent = new Intent(MainActivity.this, ViewTaskActivity.class);
+                    }
+                    startActivity(intent);
+                }
+            });
 
             return convertView;
         }

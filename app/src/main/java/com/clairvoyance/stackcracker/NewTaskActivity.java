@@ -19,6 +19,9 @@ public class NewTaskActivity extends AppCompatActivity {
 
     User mainUser;
     Calendar taskDeadline;
+    Task stackAbove;
+    boolean isDeadlineSet;
+    boolean isMainStackTask;
 
     DatePickerDialog.OnDateSetListener startDateDialogListener = new DatePickerDialog.OnDateSetListener() {
         @Override
@@ -26,6 +29,8 @@ public class NewTaskActivity extends AppCompatActivity {
             taskDeadline.set(Calendar.YEAR, year);
             taskDeadline.set(Calendar.MONTH, month);
             taskDeadline.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+
+            isDeadlineSet = true;
 
             // Update Text
             String dateText = DateFormat.getDateInstance().format(taskDeadline.getTime());
@@ -38,12 +43,23 @@ public class NewTaskActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_task);
 
+        isMainStackTask = getIntent().getBooleanExtra(DataHandler.mainStackTaskID, true);
+
+        if (!isMainStackTask){
+            // Todo: Code for using the stack from before.
+
+        }
+
+        // Todo: Setup Local Data and eventually the WebServiceHandler
+        mainUser = DataHandler.parseMainUserData(this);
+        if(mainUser == null){
+            mainUser = new User("UserID");
+        }
+
         dateTextView = findViewById(R.id.date_text);
         taskDeadline = Calendar.getInstance();
 
         setButtons();
-        // Todo: Setup Local Data and eventually the WebServiceHandler
-        mainUser = new User("UserID");
     }
 
     void setButtons(){
@@ -72,10 +88,11 @@ public class NewTaskActivity extends AppCompatActivity {
                 String noteString = ((EditText) findViewById(R.id.note_text)).getText().toString();
                 task.setNotes(noteString);
 
-                if (taskDeadline != null){
-                    task.setDateDeadline(taskDeadline.getTimeInMillis());
+                if (!isDeadlineSet || nameString.equals("") || noteString.equals("")){
+                    // Todo: Show Dialog requiring all three fields
                 }
 
+                task.setDateDeadline(taskDeadline.getTimeInMillis());
                 // Todo: Save Task Data
                 mainUser.addTask(task);
                 DataHandler.saveMainUserData(mainUser, NewTaskActivity.this);
@@ -85,7 +102,4 @@ public class NewTaskActivity extends AppCompatActivity {
             }
         });
     }
-
-
-
 }

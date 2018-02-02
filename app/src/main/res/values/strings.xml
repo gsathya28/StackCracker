@@ -6,4 +6,6 @@
     <string name="notes">Notes</string>
     <string name="date">Date:</string>
     <string name="choose">Choose</string>
+    <string name="makeStack">Make Stack</string>
+    <string name="finish">Finished?</string>
 </resources>

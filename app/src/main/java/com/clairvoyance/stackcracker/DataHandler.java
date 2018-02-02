@@ -18,6 +18,10 @@ import java.io.ObjectOutputStream;
  */
 
 class DataHandler {
+
+    final static String mainStackTaskID = "mainStackTask";
+
+
     private static byte[] serialize(Object obj) throws IOException {
         ByteArrayOutputStream b = new ByteArrayOutputStream();
         ObjectOutputStream o = new ObjectOutputStream(b);
