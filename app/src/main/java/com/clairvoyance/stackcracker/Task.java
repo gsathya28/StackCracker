@@ -1,5 +1,6 @@
 package com.clairvoyance.stackcracker;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.UUID;
@@ -9,8 +10,9 @@ import java.util.UUID;
  * Task in the Stack
  */
 
-class Task {
+class Task implements Serializable {
 
+    private boolean isStack = false;
     private String id;
     private String uid;
     private long dateCreated;

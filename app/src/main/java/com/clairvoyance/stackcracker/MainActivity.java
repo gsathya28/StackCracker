@@ -10,6 +10,9 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.text.DateFormat;
+import java.util.Calendar;
+
 public class MainActivity extends AppCompatActivity {
 
     User mainUser;
@@ -18,7 +21,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mainUser = new User("testID");
+
+        mainUser = DataHandler.parseMainUserData(this);
+        if (mainUser == null) {
+            mainUser = new User("testID");
+        }
+
         ListView mainList = findViewById(R.id.mainList);
         mainList.setAdapter(new MyAdapter());
         setButtons();
@@ -49,10 +57,15 @@ public class MainActivity extends AppCompatActivity {
             return mainUser.getTasks().get(position).getName();
         }
 
-        public String getNotes(int position){
+        String getNotes(int position){
             return mainUser.getTasks().get(position).getNotes();
         }
 
+        String getDate(int position){
+            Calendar taskDeadline = Calendar.getInstance();
+            taskDeadline.setTimeInMillis(mainUser.getTasks().get(position).getDateDeadline());
+            return "Deadline: " + DateFormat.getDateInstance().format(taskDeadline.getTime());
+        }
 
         @Override
         public long getItemId(int i) {
@@ -69,6 +82,8 @@ public class MainActivity extends AppCompatActivity {
                     .setText(getItem(position));
             ((TextView) convertView.findViewById(android.R.id.text2))
                     .setText(getNotes(position));
+            ((TextView) convertView.findViewById(R.id.text3))
+                    .setText(getDate(position));
 
             return convertView;
         }

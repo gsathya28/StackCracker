@@ -8,11 +8,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import java.text.DateFormat;
 import java.util.Calendar;
 
 public class NewTaskActivity extends AppCompatActivity {
+
+    TextView dateTextView;
 
     User mainUser;
     Calendar taskDeadline;
@@ -20,20 +23,13 @@ public class NewTaskActivity extends AppCompatActivity {
     DatePickerDialog.OnDateSetListener startDateDialogListener = new DatePickerDialog.OnDateSetListener() {
         @Override
         public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-
             taskDeadline.set(Calendar.YEAR, year);
             taskDeadline.set(Calendar.MONTH, month);
             taskDeadline.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 
-            boolean eventInPast = (taskDeadline.before(Calendar.getInstance()));
-            if (eventInPast){
-                // Clear taskDeadline and
-                // Reload this shit! (the dialog)
-            }
-            else{
-                // Dismiss the dialog
-            }
-
+            // Update Text
+            String dateText = DateFormat.getDateInstance().format(taskDeadline.getTime());
+            dateTextView.setText(dateText);
         }
     };
 
@@ -41,6 +37,10 @@ public class NewTaskActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_task);
+
+        dateTextView = findViewById(R.id.date_text);
+        taskDeadline = Calendar.getInstance();
+
         setButtons();
         // Todo: Setup Local Data and eventually the WebServiceHandler
         mainUser = new User("UserID");
@@ -53,8 +53,10 @@ public class NewTaskActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // Todo: Choose Date Dialog goes here
-                Calendar startCalendar = Calendar.getInstance();
-                DatePickerDialog dialog = new DatePickerDialog(getApplicationContext(), startDateDialogListener, startCalendar.get(Calendar.YEAR), startCalendar.get(Calendar.MONTH), startCalendar.get(Calendar.DAY_OF_MONTH));
+                DatePickerDialog dialog = new DatePickerDialog(NewTaskActivity.this, startDateDialogListener, taskDeadline.get(Calendar.YEAR), taskDeadline.get(Calendar.MONTH), taskDeadline.get(Calendar.DAY_OF_MONTH));
+                dialog.getDatePicker().setMinDate(Calendar.getInstance().getTimeInMillis() + 1000);
+                dialog.setTitle("Set Task Deadline");
+                dialog.show();
             }
         });
 
@@ -74,7 +76,9 @@ public class NewTaskActivity extends AppCompatActivity {
                     task.setDateDeadline(taskDeadline.getTimeInMillis());
                 }
 
-                // Todo: Parse Task Data
+                // Todo: Save Task Data
+                mainUser.addTask(task);
+                DataHandler.saveMainUserData(mainUser, NewTaskActivity.this);
 
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);

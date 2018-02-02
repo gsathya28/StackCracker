@@ -1,5 +1,6 @@
 package com.clairvoyance.stackcracker;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -7,7 +8,7 @@ import java.util.ArrayList;
  * User of the Stack
  */
 
-public class User {
+public class User implements Serializable {
 
     private String uid;
     private ArrayList<Task> tasks = new ArrayList<>();
@@ -16,6 +17,8 @@ public class User {
         this.uid = uid;
     }
 
+
+
     public void setTasks(ArrayList<Task> tasks) {
         this.tasks = tasks;
     }
@@ -23,10 +26,10 @@ public class User {
         tasks.add(task);
     }
 
-    public String getUid() {
+    String getUid() {
         return uid;
     }
-    public ArrayList<Task> getTasks() {
+    ArrayList<Task> getTasks() {
         return tasks;
     }
 }

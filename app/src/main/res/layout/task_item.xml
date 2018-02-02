@@ -18,16 +18,23 @@
         android:duplicateParentState="true"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1.5"
+        android:layout_weight="1"
+        android:layout_marginTop="8dp"
         android:textAppearance="?android:textAppearanceMedium" />
 
     <TextView android:id="@android:id/text2"
         android:duplicateParentState="true"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="2"
+        android:layout_weight="1"
         android:textAppearance="?android:textAppearanceMedium" />
 
+    <TextView
+        android:id="@+id/text3"
+        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_weight="1"
+        android:textAppearance="?android:textAppearanceMedium" />
 
 </LinearLayout>
 
