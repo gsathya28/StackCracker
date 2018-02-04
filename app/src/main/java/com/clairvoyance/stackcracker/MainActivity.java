@@ -50,25 +50,25 @@ public class MainActivity extends AppCompatActivity {
     private class MyAdapter extends BaseAdapter {
         @Override
         public int getCount() {
-            return mainUser.getTasks().size();
+            return mainUser.getMainStack().size();
         }
 
         @Override
         public String getItem(int position) {
-            return mainUser.getTasks().get(position).getName();
+            return mainUser.getMainStack().get(position).getName();
         }
 
         String getNotes(int position){
-            return mainUser.getTasks().get(position).getNotes();
+            return mainUser.getMainStack().get(position).getNotes();
         }
 
         Task getTask(int position){
-            return mainUser.getTasks().get(position);
+            return mainUser.getMainStack().get(position);
         }
 
         String getDate(int position){
             Calendar taskDeadline = Calendar.getInstance();
-            taskDeadline.setTimeInMillis(mainUser.getTasks().get(position).getDateDeadline());
+            taskDeadline.setTimeInMillis(mainUser.getMainStack().get(position).getDateDeadline());
             return "Deadline: " + DateFormat.getDateInstance().format(taskDeadline.getTime());
         }
 
@@ -100,6 +100,7 @@ public class MainActivity extends AppCompatActivity {
                         intent = new Intent(MainActivity.this, ViewStackActivity.class);
                     }else{
                         intent = new Intent(MainActivity.this, ViewTaskActivity.class);
+                        intent.putExtra("focusTask", task);
                     }
                     startActivity(intent);
                 }

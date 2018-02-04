@@ -11,25 +11,23 @@ import java.util.ArrayList;
 public class User implements Serializable {
 
     private String uid;
-    private ArrayList<Task> tasks = new ArrayList<>();
+    private ArrayList<Task> mainStack = new ArrayList<>();
 
     User(String uid){
         this.uid = uid;
     }
 
-
-
-    public void setTasks(ArrayList<Task> tasks) {
-        this.tasks = tasks;
+    public void setMainStack(ArrayList<Task> mainStack) {
+        this.mainStack = mainStack;
     }
     public void addTask(Task task){
-        tasks.add(task);
+        mainStack.add(task);
     }
 
     String getUid() {
         return uid;
     }
-    ArrayList<Task> getTasks() {
-        return tasks;
+    ArrayList<Task> getMainStack() {
+        return mainStack;
     }
 }

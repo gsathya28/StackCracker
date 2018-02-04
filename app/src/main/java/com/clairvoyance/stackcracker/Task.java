@@ -1,6 +1,7 @@
 package com.clairvoyance.stackcracker;
 
 import java.io.Serializable;
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.UUID;
@@ -44,6 +45,9 @@ class Task implements Serializable {
     void setNotes(String notes) {
         this.notes = notes;
     }
+    public void setFinished(boolean finished) {
+        isFinished = finished;
+    }
 
     public String getId() {
         return id;
@@ -56,6 +60,11 @@ class Task implements Serializable {
     }
     long getDateDeadline() {
         return dateDeadline;
+    }
+    String getDateString(){
+        Calendar taskDeadline = Calendar.getInstance();
+        taskDeadline.setTimeInMillis(dateDeadline);
+        return DateFormat.getDateInstance().format(taskDeadline.getTime());
     }
     public ArrayList<Task> getSubTasks() {
         return subTasks;
