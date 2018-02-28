@@ -8,7 +8,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 
@@ -21,11 +20,10 @@ class WebServiceHandler {
 
     final static int RC_SIGN_IN = 2899;
     final static String WEB_CLIENT_ID = "483082602147-bmhfbbj3k1proa5r2ll3hr694d9s5mrr.apps.googleusercontent.com";
-    private final static String rootID = "2rGifGh5Awf0SeYIN8C9jIoCNAr1";
     private static FirebaseUser mUser;
     private static User loadedUser;
 
-    final static String STACK_IDENTIFIER = "stacks";
+    final static String STACK_IDENTIFIER = "mainStack";
 
     private static DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
     static DatabaseReference getRootRef() {
@@ -40,7 +38,7 @@ class WebServiceHandler {
     }
 
     @Nullable
-    static User generateMainUser(){
+    static User generateMainUser() throws IllegalAccessException{
         if (isMainUserAuthenticated()){
             User user = new User(mUser.getUid(), mUser.getDisplayName());
 
@@ -49,8 +47,7 @@ class WebServiceHandler {
             return user;
         }
         else {
-            throw new IllegalStateException("Main User not Authenticated");
-            // Todo: Throw Exception to send back to Login Activity
+            throw new IllegalAccessException();
         }
     }
 
@@ -106,18 +103,9 @@ class WebServiceHandler {
         }
     }
 
-    static String getUID(){
-        if(isMainUserAuthenticated()){
-            return mUser.getUid();
-        }
-        else{
-            throw new IllegalStateException("User not authorized!");
-        }
-    }
-
     static void editStack(Stack stack){
         if (isMainUserAuthenticated()) {
-            DatabaseReference taskRef = rootRef.child(STACK_IDENTIFIER).child(stack.getStackID());
+            DatabaseReference taskRef = rootRef.child(STACK_IDENTIFIER);
             taskRef.setValue(stack);
         }
         else{
@@ -125,8 +113,6 @@ class WebServiceHandler {
         }
     }
 
-    static boolean hasRootAccess(User user){
-        return user.getUid().equals(rootID);
-    }
+
 
 }

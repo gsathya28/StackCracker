@@ -3,6 +3,7 @@ package com.clairvoyance.stackcracker;
 import com.google.firebase.database.Exclude;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.UUID;
 
 /**
@@ -16,9 +17,9 @@ class Stack {
     private String uid;
     private String stackID;
     private ArrayList<String> categories = new ArrayList<>();
-    private ArrayList<Task> tasks = new ArrayList<>();
+    private HashMap<String, Task> tasks = new HashMap<>();
 
-    public Stack(){
+    Stack(){
 
     }
 
@@ -32,15 +33,18 @@ class Stack {
     }
     void addTask(Task task){
         if(task != null) {
-            tasks.add(task);
+            tasks.put(task.getId(), task);
         }
     }
 
     ArrayList<String> getCategories(){
         return categories;
     }
-    ArrayList<Task> getTasks(){
+    HashMap<String, Task> getTasks(){
         return tasks;
+    }
+    ArrayList<Task> getTasksAsList(){
+         return (ArrayList<Task>) tasks.values();
     }
     String getStackID() {
         return stackID;

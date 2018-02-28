@@ -1,14 +1,22 @@
 package com.clairvoyance.stackcracker;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
+
 public class ViewTaskActivity extends AppCompatActivity {
 
+    String taskID;
     Task task;
+    Stack activeStack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -16,9 +24,29 @@ public class ViewTaskActivity extends AppCompatActivity {
         setContentView(R.layout.activity_view_task);
 
         // Will replace with Firebase Implementation w/ IDS
-        task = (Task) getIntent().getSerializableExtra("focusTask");
+        taskID = getIntent().getStringExtra("taskID");
 
-        setLayout();
+        DatabaseReference stackRef = WebServiceHandler.getRootRef().child(WebServiceHandler.STACK_IDENTIFIER);
+        ValueEventListener stackGetter = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                activeStack = dataSnapshot.getValue(Stack.class);
+                if (activeStack == null){
+                    Intent backToMain = new Intent(getApplicationContext(), MainActivity.class);
+                    startActivity(backToMain);
+                }else{
+                    task = activeStack.getTasks().get(taskID);
+                    setLayout();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
+        stackRef.addValueEventListener(stackGetter);
+
         setButtons();
     }
 

@@ -14,6 +14,11 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
+
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -24,6 +29,7 @@ public class NewTaskActivity extends AppCompatActivity {
     TextView dateTextView;
 
     User mainUser;
+    Stack activeStack;
     Calendar taskDeadline;
     boolean isDeadlineSet = false;
     // Default RadioButton Status is Not Started Button
@@ -50,10 +56,31 @@ public class NewTaskActivity extends AppCompatActivity {
         setContentView(R.layout.activity_new_task);
 
         // Todo: Set try-catch
-        mainUser = WebServiceHandler.generateMainUser();
-        if(mainUser == null){
-            mainUser = new User("UserID", "NewUser");
+        try {
+            mainUser = WebServiceHandler.generateMainUser();
+        }catch (IllegalAccessException i){
+            Intent backToLogin = new Intent(getApplicationContext(), LoginActivity.class);
+            startActivity(backToLogin);
         }
+
+        DatabaseReference stackRef = WebServiceHandler.getRootRef().child(WebServiceHandler.STACK_IDENTIFIER);
+        ValueEventListener stackGetter = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                activeStack = dataSnapshot.getValue(Stack.class);
+                if (activeStack == null){
+                    activeStack = new Stack();
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
+
+        stackRef.addValueEventListener(stackGetter);
 
         dateTextView = findViewById(R.id.date_text);
         taskDeadline = Calendar.getInstance();
@@ -69,7 +96,7 @@ public class NewTaskActivity extends AppCompatActivity {
 
         // Set Radio group
         RadioGroup radioGroup = new RadioGroup(getApplicationContext());
-        ArrayList<String> categories = mainUser.getActiveStack().getCategories();
+        ArrayList<String> categories = activeStack.getCategories();
 
         for(String category: categories){
             RadioButton radioButton = new RadioButton(getApplicationContext());
@@ -114,9 +141,9 @@ public class NewTaskActivity extends AppCompatActivity {
                 task.setDateDeadline(taskDeadline.getTimeInMillis());
                 task.setStatus(status);
 
-                mainUser.addTask(task);
+                activeStack.addTask(task);
                 DataHandler.saveMainUserData(mainUser, NewTaskActivity.this);
-                WebServiceHandler.editStack(mainUser.getActiveStack());
+                WebServiceHandler.editStack(activeStack);
                 WebServiceHandler.updateMainUserData(mainUser);
 
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);

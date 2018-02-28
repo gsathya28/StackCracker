@@ -10,25 +10,57 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
+
 import java.text.DateFormat;
 import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
 
     User mainUser;
+    Stack activeStack;
+
+    ListView mainList;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mainUser = WebServiceHandler.generateMainUser();
-        if (mainUser == null) {
-            mainUser = new User("testID", "NewUser");
+        try {
+            mainUser = WebServiceHandler.generateMainUser();
+        }catch (IllegalAccessException i){
+            Intent backToLogin = new Intent(getApplicationContext(), LoginActivity.class);
+            startActivity(backToLogin);
         }
 
-        ListView mainList = findViewById(R.id.mainList);
-        mainList.setAdapter(new MyAdapter());
+        setToolbar();
+        mainList = findViewById(R.id.mainList);
+
+        DatabaseReference stackRef = WebServiceHandler.getRootRef().child(WebServiceHandler.STACK_IDENTIFIER);
+        ValueEventListener stackGetter = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                activeStack = dataSnapshot.getValue(Stack.class);
+                if (activeStack == null){
+                    activeStack = new Stack();
+                    // Todo: Run Empty Stack Code
+                }
+                else{
+                    mainList.setAdapter(new MyAdapter());
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
+        stackRef.addValueEventListener(stackGetter);
         setButtons();
     }
 
@@ -58,22 +90,22 @@ public class MainActivity extends AppCompatActivity {
     private class MyAdapter extends BaseAdapter {
         @Override
         public int getCount() {
-            return mainUser.getActiveStack().getTasks().size();
+            return activeStack.getTasksAsList().size();
         }
 
         @Override
         public String getItem(int position) {
-            return mainUser.getActiveStack().getTasks().get(position).getName();
+            return activeStack.getTasksAsList().get(position).getName();
         }
         String getNotes(int position){
-            return mainUser.getActiveStack().getTasks().get(position).getNotes();
+            return activeStack.getTasksAsList().get(position).getNotes();
         }
         Task getTask(int position){
-            return mainUser.getActiveStack().getTasks().get(position);
+            return activeStack.getTasksAsList().get(position);
         }
         String getDate(int position){
             Calendar taskDeadline = Calendar.getInstance();
-            taskDeadline.setTimeInMillis(mainUser.getActiveStack().getTasks().get(position).getDateDeadline());
+            taskDeadline.setTimeInMillis(activeStack.getTasksAsList().get(position).getDateDeadline());
             return "Deadline: " + DateFormat.getDateInstance().format(taskDeadline.getTime());
         }
 
@@ -102,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(View view) {
                     Intent intent;
                     intent = new Intent(MainActivity.this, ViewTaskActivity.class);
-                    intent.putExtra("focusTask", task.getId());
+                    intent.putExtra("taskID", task.getId());
 
                     startActivity(intent);
                 }

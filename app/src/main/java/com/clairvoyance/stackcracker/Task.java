@@ -1,10 +1,7 @@
 package com.clairvoyance.stackcracker;
 
-import android.content.Context;
-
 import java.io.Serializable;
 import java.text.DateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.UUID;
 
@@ -24,7 +21,7 @@ class Task implements Serializable {
     final static int FINISHED = 5;
 
     private String id;
-    private String uid;
+    private String username;
     private long dateCreated;
     private long dateDeadline;
     private int status = 0;
@@ -33,8 +30,8 @@ class Task implements Serializable {
     private String name = "Untitled Task";
     private String notes = "No Notes";
 
-    Task(String uid){
-        this.uid = uid;
+    Task(String username){
+        this.username = username;
         this.id = UUID.randomUUID().toString();
         this.dateCreated = Calendar.getInstance().getTimeInMillis();
     }
@@ -58,8 +55,8 @@ class Task implements Serializable {
     public String getId() {
         return id;
     }
-    public String getUid() {
-        return uid;
+    public String getUsername() {
+        return username;
     }
     public long getDateCreated() {
         return dateCreated;
