@@ -35,7 +35,7 @@ public class LoginActivity extends AppCompatActivity {
                 .requestEmail()
                 .build();
 
-        // Set up Firebase Authorizer
+        // Set up Firebase Authorization
         mAuth = FirebaseAuth.getInstance();
 
         // Build a GoogleSignInClient with the options specified by gso.

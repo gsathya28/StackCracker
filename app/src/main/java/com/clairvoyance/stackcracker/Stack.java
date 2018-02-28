@@ -41,6 +41,10 @@ class Stack {
     }
 
     @Exclude
+    public String getStackID() {
+        return stackID;
+    }
+    @Exclude
     int getCategoryIndexOf(String category){
         int index = categories.indexOf(category);
         if(index != -1){

@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/holo_blue_bright"
-    tools:background="@android:color/holo_blue_bright"
+    android:background="#f0b3ff"
+    tools:background="#f0b3ff"
     tools:context="com.clairvoyance.stackcracker.NewTaskActivity">
 
 
@@ -17,7 +17,7 @@
         android:background="?attr/colorPrimary"
         android:minHeight="?attr/actionBarSize"
         android:theme="@style/ThemeOverlay.AppCompat.Dark"
-        app:layout_constraintBottom_toTopOf="@+id/main_layout"
+        app:layout_constraintBottom_toTopOf="@+id/main_scrollview"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -28,65 +28,146 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
+        android:background="#8f00b3"
         android:text="@string/add_task"
+        android:textColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
 
-    <LinearLayout
-        android:id="@+id/main_layout"
-        android:layout_width="368dp"
-        android:layout_height="0dp"
-        android:layout_marginBottom="8dp"
-        android:orientation="vertical"
+    <ScrollView
+        android:id="@+id/main_scrollview"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginTop="8dp"
         app:layout_constraintBottom_toTopOf="@+id/add_task"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/add_task_toolbar">
 
-        <EditText
-            android:id="@+id/name_text"
+        <LinearLayout
+            android:id="@+id/main_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="@string/name"
-            android:inputType="textPersonName" />
+            android:layout_marginBottom="8dp"
+            android:orientation="vertical"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent">
 
-        <EditText
-            android:id="@+id/note_text"
-            android:layout_width="match_parent"
-            android:layout_height="158dp"
-            android:ems="10"
-            android:gravity="top"
-            android:hint="@string/notes"
-            android:inputType="textMultiLine" />
+            <EditText
+                android:id="@+id/name_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:hint="@string/name"
+                android:inputType="textPersonName"
+                android:textColorHint="#000000" />
 
-        <TextView
-            android:id="@+id/date_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical|start"
-            android:paddingEnd="4dp"
-            android:paddingStart="6dp"
-            android:text="@string/date"
-            android:textSize="18sp" />
+            <EditText
+                android:id="@+id/note_text"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:ems="10"
+                android:gravity="top"
+                android:hint="@string/notes"
+                android:inputType="textMultiLine"
+                android:textColorHint="#000000" />
 
-        <TextView
-            android:id="@+id/date_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:paddingEnd="4dp"
-            android:paddingStart="6dp"
-            android:textSize="18sp" />
+            <TextView
+                android:id="@+id/date_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical|start"
+                android:paddingEnd="4dp"
+                android:paddingStart="6dp"
+                android:text="@string/date"
+                android:textColorHint="#000000"
+                android:textSize="18sp" />
 
-        <Button
-            android:id="@+id/choose_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@string/choose" />
-    </LinearLayout>
+            <TextView
+                android:id="@+id/date_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:paddingEnd="4dp"
+                android:paddingStart="6dp"
+                android:text="@string/no_date_set"
+                android:textSize="18sp" />
+
+            <Button
+                android:id="@+id/choose_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="@string/choose" />
+
+            <TextView
+                android:id="@+id/status_head"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical|start"
+                android:paddingEnd="4dp"
+                android:paddingStart="6dp"
+                android:textColorHint="#000000"
+                android:text="@string/status"
+                android:textSize="18sp" />
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:checkedButton="@id/not_started_button">
+
+                <RadioButton
+                    android:id="@+id/not_started_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:onClick="onStatusButtonClicked"
+                    android:text="@string/not_started" />
+
+                <RadioButton
+                    android:id="@+id/started_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/started"
+                    android:onClick="onStatusButtonClicked"/>
+
+                <RadioButton
+                    android:id="@+id/in_progress_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/in_progress"
+                    android:onClick="onStatusButtonClicked"/>
+
+                <RadioButton
+                    android:id="@+id/testing_me_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/testing_me"
+                    android:onClick="onStatusButtonClicked"/>
+
+                <RadioButton
+                    android:id="@+id/testing_ben_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/testing_ben"
+                    android:onClick="onStatusButtonClicked"/>
+
+                <RadioButton
+                    android:id="@+id/finished_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/finished"
+                    android:onClick="onStatusButtonClicked"/>
+            </RadioGroup>
+
+        </LinearLayout>
+    </ScrollView>
 
 
 </android.support.constraint.ConstraintLayout>

@@ -116,23 +116,15 @@ class WebServiceHandler {
         }
     }
 
-    static void addTask(Task task){
+    static void editStack(Stack stack){
         if (isMainUserAuthenticated()) {
-            DatabaseReference taskRef = rootRef.child(TASK_IDENTIFIER).child(task.getId());
-            taskRef.setValue(task);
+            DatabaseReference taskRef = rootRef.child(TASK_IDENTIFIER).child(stack.getStackID());
+            taskRef.setValue(stack);
         }
         else{
             throw new IllegalStateException("Not Authorized");
         }
     }
 
-    static void addCategories(ArrayList<String> categories){
-
-        if(isMainUserAuthenticated()){
-            DatabaseReference localRef = rootRef.child(PUBLIC_IDENTIFIER).child(CATEGORY_IDENTIFIER);
-            localRef.setValue(categories);
-        }
-
-    }
 
 }

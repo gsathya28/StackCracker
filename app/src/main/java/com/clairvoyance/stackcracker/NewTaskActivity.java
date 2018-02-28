@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +22,8 @@ public class NewTaskActivity extends AppCompatActivity {
     User mainUser;
     Calendar taskDeadline;
     boolean isDeadlineSet = false;
+    // Default RadioButton Status is Not Started Button
+    int status = Task.NOT_STARTED;
 
     DatePickerDialog.OnDateSetListener startDateDialogListener = new DatePickerDialog.OnDateSetListener() {
         @Override
@@ -50,7 +53,7 @@ public class NewTaskActivity extends AppCompatActivity {
 
         dateTextView = findViewById(R.id.date_text);
         taskDeadline = Calendar.getInstance();
-
+        // Set Category Buttons
         setButtons();
     }
 
@@ -89,12 +92,51 @@ public class NewTaskActivity extends AppCompatActivity {
 
                 mainUser.addTask(task);
                 DataHandler.saveMainUserData(mainUser, NewTaskActivity.this);
-                WebServiceHandler.addTask(task);
+                WebServiceHandler.editStack(mainUser.getActiveStack());
                 WebServiceHandler.updateMainUserData(mainUser);
 
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
             }
         });
+    }
+    public void onStatusButtonClicked(View view){
+        // Is the button now checked?
+        boolean checked = ((RadioButton) view).isChecked();
+
+        // Check which radio button was clicked
+        switch(view.getId()) {
+            case R.id.not_started_button:
+                if (checked){
+                    status = Task.NOT_STARTED;
+                }
+                break;
+            case R.id.started_button:
+                if (checked){
+                    status = Task.STARTED;
+                }
+                break;
+            case R.id.in_progress_button:
+                if (checked){
+                    status = Task.IN_PROGRESS;
+                }
+                break;
+            case R.id.testing_me_button:
+                if (checked){
+                    status = Task.TESTING_ME;
+                }
+                break;
+            case R.id.testing_ben_button:
+                if (checked){
+                    status = Task.TESTING_BEN;
+                }
+
+                break;
+            case R.id.finished_button:
+                if (checked){
+                    status = Task.FINISHED;
+                }
+                break;
+        }
     }
 }

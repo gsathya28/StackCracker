@@ -9,4 +9,14 @@
     <string name="makeStack">Make Stack</string>
     <string name="finish">Finished?</string>
     <string name="sign_in_google">Sign in with Google</string>
+    <string name="status">Status:</string>
+    <string name="no_date_set">No Date Set</string>
+    <string name="not_started">Not Started</string>
+    <string name="started">Started</string>
+    <string name="in_progress">In Progress</string>
+    <string name="testing_me">Testing by me</string>
+    <string name="testing_ben">Testing by Ben</string>
+    <string name="finished">Finished</string>
+    <string name="edit">Edit</string>
+
 </resources>
