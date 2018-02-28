@@ -13,13 +13,21 @@ import java.util.UUID;
 
 class Task implements Serializable {
 
-    private boolean isStack = false;
-    private boolean isFinished = false;
+    // Static Fields
+    final static int NOT_STARTED = 0;
+    final static int STARTED = 1;
+    final static int IN_PROGRESS = 2;
+    final static int TESTING_ME = 3;
+    final static int TESTING_BEN = 4;
+    final static int FINISHED = 5;
+
     private String id;
     private String uid;
     private long dateCreated;
     private long dateDeadline;
-    private ArrayList<Task> subTasks;
+    private ArrayList<String> subTasks;
+    private int status = 0;
+    private int category = -1;
 
     private String name = "Untitled Task";
     private String notes = "No Notes";
@@ -33,10 +41,10 @@ class Task implements Serializable {
     void setDateDeadline(long dateDeadline) {
         this.dateDeadline = dateDeadline;
     }
-    public void setSubTasks(ArrayList<Task> subTasks) {
+    public void setSubTasks(ArrayList<String> subTasks) {
         this.subTasks = subTasks;
     }
-    public void addSubTask(Task subTask){
+    public void addSubTask(String subTask){
         subTasks.add(subTask);
     }
     public void setName(String name) {
@@ -45,8 +53,8 @@ class Task implements Serializable {
     void setNotes(String notes) {
         this.notes = notes;
     }
-    public void setFinished(boolean finished) {
-        isFinished = finished;
+    void setStatus(int status) {
+        this.status = status;
     }
 
     public String getId() {
@@ -66,15 +74,13 @@ class Task implements Serializable {
         taskDeadline.setTimeInMillis(dateDeadline);
         return DateFormat.getDateInstance().format(taskDeadline.getTime());
     }
-    public ArrayList<Task> getSubTasks() {
+    public ArrayList<String> getSubTasks() {
         return subTasks;
     }
-
     public String getName() {
         return name;
     }
     String getNotes() {
         return notes;
     }
-    boolean isStack() {return isStack;}
 }

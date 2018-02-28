@@ -42,7 +42,7 @@ public class ViewTaskActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // Change the task state and save it in mainUser.
-                task.setFinished(true);
+                task.setStatus(Task.FINISHED);
                 // Save task
             }
         });

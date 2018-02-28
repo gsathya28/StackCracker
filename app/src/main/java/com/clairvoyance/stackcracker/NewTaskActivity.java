@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.DateFormat;
 import java.util.Calendar;
@@ -19,9 +20,7 @@ public class NewTaskActivity extends AppCompatActivity {
 
     User mainUser;
     Calendar taskDeadline;
-    Task stackAbove;
-    boolean isDeadlineSet;
-    boolean isMainStackTask;
+    boolean isDeadlineSet = false;
 
     DatePickerDialog.OnDateSetListener startDateDialogListener = new DatePickerDialog.OnDateSetListener() {
         @Override
@@ -43,17 +42,10 @@ public class NewTaskActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_task);
 
-        isMainStackTask = getIntent().getBooleanExtra(DataHandler.mainStackTaskID, true);
-
-        if (!isMainStackTask){
-            // Todo: Code for using the stack from before.
-
-        }
-
         // Todo: Setup Local Data and eventually the WebServiceHandler
         mainUser = DataHandler.parseMainUserData(this);
         if(mainUser == null){
-            mainUser = new User("UserID");
+            mainUser = new User("UserID", "NewUser");
         }
 
         dateTextView = findViewById(R.id.date_text);
@@ -89,13 +81,16 @@ public class NewTaskActivity extends AppCompatActivity {
                 task.setNotes(noteString);
 
                 if (!isDeadlineSet || nameString.equals("") || noteString.equals("")){
-                    // Todo: Show Dialog requiring all three fields
+                    Toast.makeText(getApplicationContext(), "All Fields are required", Toast.LENGTH_SHORT).show();
+                    return;
                 }
 
                 task.setDateDeadline(taskDeadline.getTimeInMillis());
-                // Todo: Save Task Data
+
                 mainUser.addTask(task);
                 DataHandler.saveMainUserData(mainUser, NewTaskActivity.this);
+                WebServiceHandler.addTask(task);
+                WebServiceHandler.updateMainUserData(mainUser);
 
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);

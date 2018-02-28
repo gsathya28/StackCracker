@@ -1,33 +1,35 @@
 package com.clairvoyance.stackcracker;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 
 /**
  * Created by Sathya on 1/30/2018.
  * User of the Stack
  */
 
-public class User implements Serializable {
+class User implements Serializable {
 
     private String uid;
-    private ArrayList<Task> mainStack = new ArrayList<>();
+    private String name;
+    // Make an arrayList of Stacks later
+    private Stack activeStack;
 
-    User(String uid){
+    User(String uid, String name){
         this.uid = uid;
+        this.name = name;
+        // Yeah, this will change too... (ArrayList Life)
+        this.activeStack = new Stack(uid);
     }
 
-    public void setMainStack(ArrayList<Task> mainStack) {
-        this.mainStack = mainStack;
+    void addTask(Task task){
+        activeStack.addTask(task);
     }
-    public void addTask(Task task){
-        mainStack.add(task);
-    }
-
     String getUid() {
         return uid;
     }
-    ArrayList<Task> getMainStack() {
-        return mainStack;
+    String getName(){ return name; }
+    Stack getActiveStack() {
+        return activeStack;
     }
+
 }

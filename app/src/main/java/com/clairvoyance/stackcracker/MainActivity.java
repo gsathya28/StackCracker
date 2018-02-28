@@ -22,9 +22,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mainUser = DataHandler.parseMainUserData(this);
+        mainUser = WebServiceHandler.generateMainUser();
         if (mainUser == null) {
-            mainUser = new User("testID");
+            mainUser = new User("testID", "NewUser");
         }
 
         ListView mainList = findViewById(R.id.mainList);
@@ -38,7 +38,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), NewTaskActivity.class);
-                intent.putExtra(DataHandler.mainStackTaskID, true);
                 startActivity(intent);
             }
         });
@@ -50,25 +49,22 @@ public class MainActivity extends AppCompatActivity {
     private class MyAdapter extends BaseAdapter {
         @Override
         public int getCount() {
-            return mainUser.getMainStack().size();
+            return mainUser.getActiveStack().getTasks().size();
         }
 
         @Override
         public String getItem(int position) {
-            return mainUser.getMainStack().get(position).getName();
+            return mainUser.getActiveStack().getTasks().get(position).getName();
         }
-
         String getNotes(int position){
-            return mainUser.getMainStack().get(position).getNotes();
+            return mainUser.getActiveStack().getTasks().get(position).getNotes();
         }
-
         Task getTask(int position){
-            return mainUser.getMainStack().get(position);
+            return mainUser.getActiveStack().getTasks().get(position);
         }
-
         String getDate(int position){
             Calendar taskDeadline = Calendar.getInstance();
-            taskDeadline.setTimeInMillis(mainUser.getMainStack().get(position).getDateDeadline());
+            taskDeadline.setTimeInMillis(mainUser.getActiveStack().getTasks().get(position).getDateDeadline());
             return "Deadline: " + DateFormat.getDateInstance().format(taskDeadline.getTime());
         }
 
@@ -96,12 +92,9 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     Intent intent;
-                    if(task.isStack()){
-                        intent = new Intent(MainActivity.this, ViewStackActivity.class);
-                    }else{
-                        intent = new Intent(MainActivity.this, ViewTaskActivity.class);
-                        intent.putExtra("focusTask", task);
-                    }
+                    intent = new Intent(MainActivity.this, ViewTaskActivity.class);
+                    intent.putExtra("focusTask", task.getId());
+
                     startActivity(intent);
                 }
             });

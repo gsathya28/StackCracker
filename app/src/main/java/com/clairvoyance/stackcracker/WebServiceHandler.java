@@ -11,6 +11,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+
 /**
  * Created by Sathya on 2/3/2018.
  * WebServiceHandler for Firebase
@@ -22,6 +24,10 @@ class WebServiceHandler {
     final static String WEB_CLIENT_ID = "483082602147-bmhfbbj3k1proa5r2ll3hr694d9s5mrr.apps.googleusercontent.com";
     private static FirebaseUser mUser;
     private static User loadedUser;
+
+    private final static String TASK_IDENTIFIER = "tasks";
+    private final static String PUBLIC_IDENTIFIER = "publicData";
+    private final static String CATEGORY_IDENTIFIER = "categories";
 
     private static DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
     static DatabaseReference getRootRef() {
@@ -37,7 +43,7 @@ class WebServiceHandler {
     @Nullable
     static User generateMainUser(){
         if (isMainUserAuthenticated()){
-            User user = new User(mUser.getUid());
+            User user = new User(mUser.getUid(), mUser.getDisplayName());
 
             // Key-line
             user = loadMainUserData(user);
@@ -109,4 +115,24 @@ class WebServiceHandler {
             throw new IllegalStateException("User not authorized!");
         }
     }
+
+    static void addTask(Task task){
+        if (isMainUserAuthenticated()) {
+            DatabaseReference taskRef = rootRef.child(TASK_IDENTIFIER).child(task.getId());
+            taskRef.setValue(task);
+        }
+        else{
+            throw new IllegalStateException("Not Authorized");
+        }
+    }
+
+    static void addCategories(ArrayList<String> categories){
+
+        if(isMainUserAuthenticated()){
+            DatabaseReference localRef = rootRef.child(PUBLIC_IDENTIFIER).child(CATEGORY_IDENTIFIER);
+            localRef.setValue(categories);
+        }
+
+    }
+
 }
