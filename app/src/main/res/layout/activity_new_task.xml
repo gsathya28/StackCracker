@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#f0b3ff"
     tools:background="#f0b3ff"
     tools:context="com.clairvoyance.stackcracker.NewTaskActivity">
 
@@ -14,7 +13,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:background="?attr/colorPrimary"
+        android:background="#8f00b3"
         android:minHeight="?attr/actionBarSize"
         android:theme="@style/ThemeOverlay.AppCompat.Dark"
         app:layout_constraintBottom_toTopOf="@+id/main_scrollview"
@@ -27,10 +26,9 @@
         android:id="@+id/add_task"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
         android:background="#8f00b3"
         android:text="@string/add_task"
-        android:textColor="#FFFFFF"
+        android:textColor="#ffffff"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
@@ -108,8 +106,8 @@
                 android:gravity="center_vertical|start"
                 android:paddingEnd="4dp"
                 android:paddingStart="6dp"
-                android:textColorHint="#000000"
                 android:text="@string/status"
+                android:textColorHint="#000000"
                 android:textSize="18sp" />
 
             <RadioGroup
@@ -130,41 +128,54 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/started"
-                    android:onClick="onStatusButtonClicked"/>
+                    android:onClick="onStatusButtonClicked"
+                    android:text="@string/started" />
 
                 <RadioButton
                     android:id="@+id/in_progress_button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/in_progress"
-                    android:onClick="onStatusButtonClicked"/>
+                    android:onClick="onStatusButtonClicked"
+                    android:text="@string/in_progress" />
 
                 <RadioButton
                     android:id="@+id/testing_me_button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/testing_me"
-                    android:onClick="onStatusButtonClicked"/>
+                    android:onClick="onStatusButtonClicked"
+                    android:text="@string/testing_me" />
 
                 <RadioButton
                     android:id="@+id/testing_ben_button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/testing_ben"
-                    android:onClick="onStatusButtonClicked"/>
+                    android:onClick="onStatusButtonClicked"
+                    android:text="@string/testing_ben" />
 
                 <RadioButton
                     android:id="@+id/finished_button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/finished"
-                    android:onClick="onStatusButtonClicked"/>
+                    android:onClick="onStatusButtonClicked"
+                    android:text="@string/finished" />
+
             </RadioGroup>
+
+            <TextView
+                android:id="@+id/categories_head"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical|start"
+                android:paddingEnd="4dp"
+                android:paddingStart="6dp"
+                android:text="@string/categories"
+                android:textColorHint="#000000"
+                android:textSize="18sp" />
 
         </LinearLayout>
     </ScrollView>

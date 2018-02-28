@@ -32,6 +32,15 @@ public class MainActivity extends AppCompatActivity {
         setButtons();
     }
 
+    // Todo: Set up Menu for Toolbar
+    // Todo: Set up New Category Dialog
+    // Todo: Delete Category Dialog
+
+    public void setToolbar(){
+
+
+    }
+
     public void setButtons(){
         Button addTask = findViewById(R.id.add_task_button);
         addTask.setOnClickListener(new View.OnClickListener() {

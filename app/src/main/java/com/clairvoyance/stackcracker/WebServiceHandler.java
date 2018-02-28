@@ -11,7 +11,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
 
 /**
  * Created by Sathya on 2/3/2018.
@@ -22,17 +21,17 @@ class WebServiceHandler {
 
     final static int RC_SIGN_IN = 2899;
     final static String WEB_CLIENT_ID = "483082602147-bmhfbbj3k1proa5r2ll3hr694d9s5mrr.apps.googleusercontent.com";
+    private final static String rootID = "2rGifGh5Awf0SeYIN8C9jIoCNAr1";
     private static FirebaseUser mUser;
     private static User loadedUser;
 
-    private final static String TASK_IDENTIFIER = "tasks";
-    private final static String PUBLIC_IDENTIFIER = "publicData";
-    private final static String CATEGORY_IDENTIFIER = "categories";
+    final static String STACK_IDENTIFIER = "stacks";
 
     private static DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
     static DatabaseReference getRootRef() {
         return rootRef;
     }
+
 
     private static boolean isMainUserAuthenticated(){
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -118,7 +117,7 @@ class WebServiceHandler {
 
     static void editStack(Stack stack){
         if (isMainUserAuthenticated()) {
-            DatabaseReference taskRef = rootRef.child(TASK_IDENTIFIER).child(stack.getStackID());
+            DatabaseReference taskRef = rootRef.child(STACK_IDENTIFIER).child(stack.getStackID());
             taskRef.setValue(stack);
         }
         else{
@@ -126,5 +125,8 @@ class WebServiceHandler {
         }
     }
 
+    static boolean hasRootAccess(User user){
+        return user.getUid().equals(rootID);
+    }
 
 }

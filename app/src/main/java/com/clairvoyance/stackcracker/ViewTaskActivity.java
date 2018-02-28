@@ -6,8 +6,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 public class ViewTaskActivity extends AppCompatActivity {
 
     Task task;
@@ -25,6 +23,14 @@ public class ViewTaskActivity extends AppCompatActivity {
     }
 
     void setLayout(){
+        TextView categoryTextView = findViewById(R.id.category_text);
+        String categoryString = "Category: " + task.getCategory();
+        categoryTextView.setText(categoryString);
+
+        TextView statusTextView = findViewById(R.id.status_text);
+        String statusString = "Status: " + task.getStatus();
+        statusTextView.setText(statusString);
+
         TextView nameTextView = findViewById(R.id.name_text);
         nameTextView.setText(task.getName());
 

@@ -14,9 +14,10 @@
     <string name="not_started">Not Started</string>
     <string name="started">Started</string>
     <string name="in_progress">In Progress</string>
-    <string name="testing_me">Testing by me</string>
+    <string name="testing_me">Testing by Sathya</string>
     <string name="testing_ben">Testing by Ben</string>
     <string name="finished">Finished</string>
     <string name="edit">Edit</string>
+    <string name="categories">Categories:</string>
 
 </resources>

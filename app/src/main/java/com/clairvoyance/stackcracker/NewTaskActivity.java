@@ -8,15 +8,19 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class NewTaskActivity extends AppCompatActivity {
 
+    LinearLayout mainLayout;
     TextView dateTextView;
 
     User mainUser;
@@ -45,8 +49,8 @@ public class NewTaskActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_task);
 
-        // Todo: Setup Local Data and eventually the WebServiceHandler
-        mainUser = DataHandler.parseMainUserData(this);
+        // Todo: Set try-catch
+        mainUser = WebServiceHandler.generateMainUser();
         if(mainUser == null){
             mainUser = new User("UserID", "NewUser");
         }
@@ -54,7 +58,27 @@ public class NewTaskActivity extends AppCompatActivity {
         dateTextView = findViewById(R.id.date_text);
         taskDeadline = Calendar.getInstance();
         // Set Category Buttons
+
+        mainLayout = findViewById(R.id.main_layout);
+
+        setLayout();
         setButtons();
+    }
+
+    void setLayout(){
+
+        // Set Radio group
+        RadioGroup radioGroup = new RadioGroup(getApplicationContext());
+        ArrayList<String> categories = mainUser.getActiveStack().getCategories();
+
+        for(String category: categories){
+            RadioButton radioButton = new RadioButton(getApplicationContext());
+            radioButton.setText(category);
+            radioGroup.addView(radioButton);
+        }
+
+        mainLayout.addView(radioGroup);
+
     }
 
     void setButtons(){
@@ -63,7 +87,6 @@ public class NewTaskActivity extends AppCompatActivity {
         calendarButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Todo: Choose Date Dialog goes here
                 DatePickerDialog dialog = new DatePickerDialog(NewTaskActivity.this, startDateDialogListener, taskDeadline.get(Calendar.YEAR), taskDeadline.get(Calendar.MONTH), taskDeadline.get(Calendar.DAY_OF_MONTH));
                 dialog.getDatePicker().setMinDate(Calendar.getInstance().getTimeInMillis() + 1000);
                 dialog.setTitle("Set Task Deadline");
@@ -89,6 +112,7 @@ public class NewTaskActivity extends AppCompatActivity {
                 }
 
                 task.setDateDeadline(taskDeadline.getTimeInMillis());
+                task.setStatus(status);
 
                 mainUser.addTask(task);
                 DataHandler.saveMainUserData(mainUser, NewTaskActivity.this);

@@ -18,6 +18,9 @@ class Stack {
     private ArrayList<String> categories = new ArrayList<>();
     private ArrayList<Task> tasks = new ArrayList<>();
 
+    public Stack(){
+
+    }
 
     Stack(String uid){
         this.uid = uid;
@@ -39,11 +42,10 @@ class Stack {
     ArrayList<Task> getTasks(){
         return tasks;
     }
-
-    @Exclude
-    public String getStackID() {
+    String getStackID() {
         return stackID;
     }
+
     @Exclude
     int getCategoryIndexOf(String category){
         int index = categories.indexOf(category);
@@ -66,7 +68,8 @@ class Stack {
             throw new IllegalArgumentException();
         }
     }
-
-
-
+    @Exclude
+    void saveStack(){
+        WebServiceHandler.editStack(this);
+    }
 }

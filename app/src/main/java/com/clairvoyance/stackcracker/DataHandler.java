@@ -19,8 +19,6 @@ import java.io.ObjectOutputStream;
 
 class DataHandler {
 
-    final static String mainStackTaskID = "mainStackTask";
-
 
     private static byte[] serialize(Object obj) throws IOException {
         ByteArrayOutputStream b = new ByteArrayOutputStream();
@@ -34,6 +32,7 @@ class DataHandler {
         ObjectInputStream o = new ObjectInputStream(b);
         return o.readObject();
     }
+
 
     static User parseMainUserData(Context context){
         User mainUser = null;
