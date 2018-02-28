@@ -4,7 +4,6 @@ import com.google.firebase.database.Exclude;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.UUID;
 
 /**
  * Created by Sathya on 2/27/2018.
@@ -15,7 +14,6 @@ class Stack {
 
     // Categories
     private String uid;
-    private String stackID;
     private ArrayList<String> categories = new ArrayList<>();
     private HashMap<String, Task> tasks = new HashMap<>();
 
@@ -25,11 +23,16 @@ class Stack {
 
     Stack(String uid){
         this.uid = uid;
-        this.stackID = UUID.randomUUID().toString();
     }
 
     void addCategory(String category){
         categories.add(category);
+    }
+    void deleteCategory(String category){
+        categories.remove(category);
+        // More code to remove the events from the category...
+
+
     }
     void addTask(Task task){
         if(task != null) {
@@ -43,13 +46,14 @@ class Stack {
     HashMap<String, Task> getTasks(){
         return tasks;
     }
-    ArrayList<Task> getTasksAsList(){
-         return (ArrayList<Task>) tasks.values();
-    }
-    String getStackID() {
-        return stackID;
+    String getUid(){
+        return uid;
     }
 
+    @Exclude
+    ArrayList<Task> getTasksAsList(){
+         return new ArrayList<>(tasks.values());
+    }
     @Exclude
     int getCategoryIndexOf(String category){
         int index = categories.indexOf(category);

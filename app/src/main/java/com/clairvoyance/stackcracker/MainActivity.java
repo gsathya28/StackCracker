@@ -47,7 +47,8 @@ public class MainActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 activeStack = dataSnapshot.getValue(Stack.class);
                 if (activeStack == null){
-                    activeStack = new Stack();
+                    activeStack = new Stack(WebServiceHandler.getUID());
+                    activeStack.saveStack();
                     // Todo: Run Empty Stack Code
                 }
                 else{

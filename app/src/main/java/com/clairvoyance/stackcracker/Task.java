@@ -1,5 +1,7 @@
 package com.clairvoyance.stackcracker;
 
+import com.google.firebase.database.Exclude;
+
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.util.Calendar;
@@ -29,6 +31,10 @@ class Task implements Serializable {
 
     private String name = "Untitled Task";
     private String notes = "No Notes";
+
+    Task(){
+
+    }
 
     Task(String username){
         this.username = username;
@@ -78,6 +84,11 @@ class Task implements Serializable {
     String getCategory(){
         return category;
     }
+    int getIntStatus(){
+        return status;
+    }
+
+    @Exclude
     String getStatus(){
         switch (status){
             case NOT_STARTED:

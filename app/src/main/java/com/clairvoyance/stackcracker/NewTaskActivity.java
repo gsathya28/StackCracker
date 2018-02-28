@@ -69,7 +69,7 @@ public class NewTaskActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 activeStack = dataSnapshot.getValue(Stack.class);
                 if (activeStack == null){
-                    activeStack = new Stack();
+                    activeStack = new Stack(mainUser.getUid());
                 }
 
             }
@@ -96,7 +96,17 @@ public class NewTaskActivity extends AppCompatActivity {
 
         // Set Radio group
         RadioGroup radioGroup = new RadioGroup(getApplicationContext());
-        ArrayList<String> categories = activeStack.getCategories();
+        ArrayList<String> categories = new ArrayList<>();
+        if (activeStack != null) {
+            categories = activeStack.getCategories();
+        }
+
+        if(categories.isEmpty()){
+            TextView noCategories = new TextView(getApplicationContext());
+            noCategories.setText("No Categories yet!");
+            mainLayout.addView(noCategories);
+            // Maybe add a button to a dialog here??
+        }
 
         for(String category: categories){
             RadioButton radioButton = new RadioButton(getApplicationContext());
@@ -142,9 +152,7 @@ public class NewTaskActivity extends AppCompatActivity {
                 task.setStatus(status);
 
                 activeStack.addTask(task);
-                DataHandler.saveMainUserData(mainUser, NewTaskActivity.this);
-                WebServiceHandler.editStack(activeStack);
-                WebServiceHandler.updateMainUserData(mainUser);
+                activeStack.saveStack();
 
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);

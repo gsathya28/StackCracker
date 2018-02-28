@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#f0b3ff"
     tools:background="#f0b3ff"
     tools:context="com.clairvoyance.stackcracker.NewTaskActivity">
 
@@ -36,9 +37,9 @@
     <ScrollView
         android:id="@+id/main_scrollview"
         android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/add_task"
+        android:layout_height="0dp"
+        android:background="#f0b3ff"
+        app:layout_constraintBottom_toTopOf="@id/add_task"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/add_task_toolbar">
@@ -47,10 +48,8 @@
             android:id="@+id/main_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:orientation="vertical"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent">
+            android:layout_marginBottom="16dp"
+            android:orientation="vertical">
 
             <EditText
                 android:id="@+id/name_text"

@@ -1,14 +1,5 @@
 package com.clairvoyance.stackcracker;
 
-import android.renderscript.Sampler;
-
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.Exclude;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
-
 import java.io.Serializable;
 
 /**
@@ -35,7 +26,5 @@ class User implements Serializable {
         return uid;
     }
     String getName(){ return name; }
-
-
 
 }
