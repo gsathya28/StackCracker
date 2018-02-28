@@ -96,17 +96,6 @@ class WebServiceHandler {
         }
     }
 
-    static void updateMainUserData(User user){
-        if (isMainUserAuthenticated()){
-            DatabaseReference userRef = rootRef.child("users").child(mUser.getUid());
-            userRef.setValue(user);
-        }
-        else {
-            throw new IllegalStateException("User not authorized");
-            // Todo: Implement Try-catch to send activities back to the Login Activity
-        }
-    }
-
     static void editStack(Stack stack){
         if (isMainUserAuthenticated()) {
             DatabaseReference taskRef = rootRef.child(STACK_IDENTIFIER);

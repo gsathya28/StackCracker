@@ -27,6 +27,7 @@ public class NewTaskActivity extends AppCompatActivity {
 
     LinearLayout mainLayout;
     TextView dateTextView;
+    RadioGroup radioGroup;
 
     User mainUser;
     Stack activeStack;
@@ -70,6 +71,8 @@ public class NewTaskActivity extends AppCompatActivity {
                 activeStack = dataSnapshot.getValue(Stack.class);
                 if (activeStack == null){
                     activeStack = new Stack(mainUser.getUid());
+                }else{
+                    setLayout();
                 }
 
             }
@@ -88,14 +91,13 @@ public class NewTaskActivity extends AppCompatActivity {
 
         mainLayout = findViewById(R.id.main_layout);
 
-        setLayout();
         setButtons();
     }
 
     void setLayout(){
 
         // Set Radio group
-        RadioGroup radioGroup = new RadioGroup(getApplicationContext());
+        radioGroup = new RadioGroup(getApplicationContext());
         ArrayList<String> categories = new ArrayList<>();
         if (activeStack != null) {
             categories = activeStack.getCategories();
@@ -106,16 +108,19 @@ public class NewTaskActivity extends AppCompatActivity {
             noCategories.setText("No Categories yet!");
             mainLayout.addView(noCategories);
             // Maybe add a button to a dialog here??
-        }
-
-        for(String category: categories){
-            RadioButton radioButton = new RadioButton(getApplicationContext());
-            radioButton.setText(category);
-            radioGroup.addView(radioButton);
+        }else {
+            RadioButton defaultButton = new RadioButton(getApplicationContext());
+            defaultButton.setText("No Category");
+            radioGroup.addView(defaultButton);
+            defaultButton.setChecked(true);
+            for(String category: categories){
+                RadioButton radioButton = new RadioButton(getApplicationContext());
+                radioButton.setText(category);
+                radioGroup.addView(radioButton);
+            }
         }
 
         mainLayout.addView(radioGroup);
-
     }
 
     void setButtons(){
@@ -198,4 +203,7 @@ public class NewTaskActivity extends AppCompatActivity {
                 break;
         }
     }
+
+
+
 }

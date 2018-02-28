@@ -12,7 +12,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:background="?attr/colorPrimary"
+        android:background="#8f00b3"
+        android:textColor="#ffffff"
         android:minHeight="?attr/actionBarSize"
         android:theme="@style/ThemeOverlay.AppCompat.Dark"
         app:layout_constraintBottom_toTopOf="@+id/scrollView2"
@@ -87,6 +88,8 @@
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:text="@string/edit"
+        android:background="#8f00b3"
+        android:textColor="#ffffff"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -97,8 +100,22 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:text="@string/finish"
+        android:background="#8f00b3"
+        android:textColor="#ffffff"
         app:layout_constraintEnd_toStartOf="@+id/make_stack"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/delete_task"
         app:layout_constraintTop_toTopOf="@+id/make_stack" />
+
+    <Button
+        android:id="@+id/delete_task"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginStart="8dp"
+        android:text="@string/delete"
+        android:background="#8f00b3"
+        android:textColor="#ffffff"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

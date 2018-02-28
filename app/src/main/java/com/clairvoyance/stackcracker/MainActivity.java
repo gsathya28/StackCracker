@@ -1,12 +1,22 @@
 package com.clairvoyance.stackcracker;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -71,7 +81,13 @@ public class MainActivity extends AppCompatActivity {
 
     public void setToolbar(){
 
+        Toolbar myToolbar = findViewById(R.id.main_toolbar);
+        myToolbar.setTitleTextColor(Color.parseColor("#FFFFFF"));
+        myToolbar.setTitle("The Stack: ");
+        setSupportActionBar(myToolbar);
+        // Get a support ActionBar corresponding to this toolbar
 
+        // Enable the Up button
     }
 
     public void setButtons(){
@@ -83,6 +99,34 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.toolbar_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.add_category_button:
+                buildCategoryDialog().show();
+                return true;
+
+            case R.id.action_settings:
+                // User chose the "Settings" item, show the app settings UI...
+                return true;
+
+            case R.id.action_search_event:
+                // This will lead to an activity (GUI) that will Search/Scan
+                return true;
+
+            default:
+                // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     /**
@@ -144,4 +188,24 @@ public class MainActivity extends AppCompatActivity {
             return convertView;
         }
     }
+
+    AlertDialog buildCategoryDialog(){
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+
+        builder.setTitle("New Category Name:");
+        final EditText editText = new EditText(MainActivity.this);
+
+        builder.setView(editText);
+        builder.setPositiveButton("Create", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                activeStack.addCategory(editText.getText().toString());
+                activeStack.saveStack();
+            }
+        });
+        builder.setNegativeButton("Cancel", null);
+        return builder.create();
+    }
+
 }

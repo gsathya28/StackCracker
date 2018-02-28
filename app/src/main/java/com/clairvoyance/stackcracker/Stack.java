@@ -34,10 +34,17 @@ class Stack {
 
 
     }
+
+
+
     void addTask(Task task){
         if(task != null) {
             tasks.put(task.getId(), task);
         }
+    }
+    void removeTask(String taskID){
+        tasks.remove(taskID);
+        saveStack();
     }
 
     ArrayList<String> getCategories(){

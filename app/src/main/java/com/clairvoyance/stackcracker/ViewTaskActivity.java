@@ -80,7 +80,14 @@ public class ViewTaskActivity extends AppCompatActivity {
                 // Save task
             }
         });
+
+        Button delete = findViewById(R.id.delete_task);
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Todo: This needs a dialog
+                activeStack.removeTask(task.getId());
+            }
+        });
     }
-
-
 }
