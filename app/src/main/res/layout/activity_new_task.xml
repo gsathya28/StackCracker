@@ -112,6 +112,7 @@
             <RadioGroup
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:id="@+id/status_radio"
                 android:checkedButton="@id/not_started_button">
 
                 <RadioButton
@@ -119,7 +120,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:onClick="onStatusButtonClicked"
                     android:text="@string/not_started" />
 
                 <RadioButton
@@ -127,7 +127,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:onClick="onStatusButtonClicked"
                     android:text="@string/started" />
 
                 <RadioButton
@@ -135,7 +134,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:onClick="onStatusButtonClicked"
                     android:text="@string/in_progress" />
 
                 <RadioButton
@@ -143,7 +141,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:onClick="onStatusButtonClicked"
                     android:text="@string/testing_me" />
 
                 <RadioButton
@@ -151,7 +148,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:onClick="onStatusButtonClicked"
                     android:text="@string/testing_ben" />
 
                 <RadioButton
@@ -159,7 +155,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:onClick="onStatusButtonClicked"
                     android:text="@string/finished" />
 
             </RadioGroup>

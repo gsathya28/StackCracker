@@ -1,11 +1,15 @@
 package com.clairvoyance.stackcracker;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -17,6 +21,8 @@ public class ViewTaskActivity extends AppCompatActivity {
     String taskID;
     Task task;
     Stack activeStack;
+
+    Toolbar myToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +42,16 @@ public class ViewTaskActivity extends AppCompatActivity {
                     startActivity(backToMain);
                 }else{
                     task = activeStack.getTasks().get(taskID);
-                    setLayout();
+                    if (task == null){
+                        // Task was deleted or non-existent - go back..
+                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        startActivity(intent);
+                        Toast.makeText(getApplicationContext(), "Task Deleted", Toast.LENGTH_SHORT).show();
+                    }
+                    else{
+                        setLayout();
+                    }
+
                 }
             }
 
@@ -46,8 +61,18 @@ public class ViewTaskActivity extends AppCompatActivity {
             }
         };
         stackRef.addValueEventListener(stackGetter);
-
+        setToolbar();
         setButtons();
+    }
+
+    void setToolbar(){
+        myToolbar = findViewById(R.id.view_task_toolbar);
+        myToolbar.setTitleTextColor(Color.parseColor("#FFFFFF"));
+        myToolbar.setTitle("Task Name...");
+        setSupportActionBar(myToolbar);
+        ActionBar ab = getSupportActionBar();
+
+        ab.setDisplayHomeAsUpEnabled(true);
     }
 
     void setLayout(){
@@ -56,11 +81,12 @@ public class ViewTaskActivity extends AppCompatActivity {
         categoryTextView.setText(categoryString);
 
         TextView statusTextView = findViewById(R.id.status_text);
-        String statusString = "Status: " + task.getStatus();
+        String statusString = "Status: " + task.getStringStatus();
         statusTextView.setText(statusString);
 
         TextView nameTextView = findViewById(R.id.name_text);
         nameTextView.setText(task.getName());
+        myToolbar.setTitle(task.getName());
 
         TextView noteTextView = findViewById(R.id.note_text);
         noteTextView.setText(task.getNotes());

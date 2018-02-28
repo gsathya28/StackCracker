@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -24,6 +25,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
+
+import org.w3c.dom.Text;
 
 import java.text.DateFormat;
 import java.util.Calendar;
@@ -119,7 +122,12 @@ public class MainActivity extends AppCompatActivity {
                 return true;
 
             case R.id.action_search_event:
-                // This will lead to an activity (GUI) that will Search/Scan
+                // This will lead to a dialog(GUI) that will Search/Scan
+                return true;
+
+            case R.id.delete_category:
+                // Delete Category Dialog
+                deleteCategoryDialog().show();
                 return true;
 
             default:
@@ -206,6 +214,40 @@ public class MainActivity extends AppCompatActivity {
         });
         builder.setNegativeButton("Cancel", null);
         return builder.create();
+    }
+
+    AlertDialog deleteCategoryDialog(){
+        LinearLayout categoryList = new LinearLayout(MainActivity.this);
+        categoryList.setOrientation(LinearLayout.VERTICAL);
+
+        TextView noteText = new TextView(MainActivity.this);
+        noteText.setText("Note: All tasks under a deleted category will be removed from that category!");
+        categoryList.addView(noteText);
+
+        for (String category: activeStack.getCategories()){
+            CheckBox checkBox = new CheckBox(MainActivity.this);
+            checkBox.setText(category);
+            // Set on checkedChangeListener??
+            categoryList.addView(checkBox);
+        }
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        builder.setTitle("Delete Categories");
+        builder.setView(categoryList);
+        builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
+        builder.setNegativeButton("Cancel", null);
+
+        return builder.create();
+    }
+
+    @Override
+    public void onBackPressed() {
+        // Do nothing!
     }
 
 }

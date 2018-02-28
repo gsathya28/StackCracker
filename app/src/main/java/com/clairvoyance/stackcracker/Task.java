@@ -26,7 +26,7 @@ class Task implements Serializable {
     private String username;
     private long dateCreated;
     private long dateDeadline;
-    private int status = 0;
+    private int status;
     private String category;
 
     private String name = "Untitled Task";
@@ -84,12 +84,12 @@ class Task implements Serializable {
     String getCategory(){
         return category;
     }
-    int getIntStatus(){
+    int getStatus(){
         return status;
     }
 
     @Exclude
-    String getStatus(){
+    String getStringStatus(){
         switch (status){
             case NOT_STARTED:
                 return "Not Started";

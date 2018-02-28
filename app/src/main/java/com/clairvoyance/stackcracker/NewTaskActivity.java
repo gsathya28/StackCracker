@@ -2,8 +2,11 @@ package com.clairvoyance.stackcracker;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -27,7 +30,8 @@ public class NewTaskActivity extends AppCompatActivity {
 
     LinearLayout mainLayout;
     TextView dateTextView;
-    RadioGroup radioGroup;
+    RadioGroup categoryRadioGroup;
+    RadioGroup statusRadioGroup;
 
     User mainUser;
     Stack activeStack;
@@ -89,15 +93,54 @@ public class NewTaskActivity extends AppCompatActivity {
         taskDeadline = Calendar.getInstance();
         // Set Category Buttons
 
+        statusRadioGroup = findViewById(R.id.status_radio);
+        statusRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+
+                switch(i) {
+                    case R.id.not_started_button:
+                        status = Task.NOT_STARTED;
+                        break;
+                    case R.id.started_button:
+                        status = Task.STARTED;
+                        break;
+                    case R.id.in_progress_button:
+                        status = Task.IN_PROGRESS;
+                        break;
+                    case R.id.testing_me_button:
+                        status = Task.TESTING_ME;
+                        break;
+                    case R.id.testing_ben_button:
+                        status = Task.TESTING_BEN;
+                        break;
+                    case R.id.finished_button:
+                        status = Task.FINISHED;
+                        break;
+                }
+            }
+        });
+
         mainLayout = findViewById(R.id.main_layout);
 
+        setToolbar();
         setButtons();
+    }
+
+    void setToolbar(){
+        Toolbar myToolbar = findViewById(R.id.add_task_toolbar);
+        myToolbar.setTitleTextColor(Color.parseColor("#FFFFFF"));
+        myToolbar.setTitle("New Task");
+        setSupportActionBar(myToolbar);
+        ActionBar ab = getSupportActionBar();
+
+        ab.setDisplayHomeAsUpEnabled(true);
     }
 
     void setLayout(){
 
         // Set Radio group
-        radioGroup = new RadioGroup(getApplicationContext());
+        categoryRadioGroup = new RadioGroup(getApplicationContext());
         ArrayList<String> categories = new ArrayList<>();
         if (activeStack != null) {
             categories = activeStack.getCategories();
@@ -111,16 +154,16 @@ public class NewTaskActivity extends AppCompatActivity {
         }else {
             RadioButton defaultButton = new RadioButton(getApplicationContext());
             defaultButton.setText("No Category");
-            radioGroup.addView(defaultButton);
+            categoryRadioGroup.addView(defaultButton);
             defaultButton.setChecked(true);
             for(String category: categories){
                 RadioButton radioButton = new RadioButton(getApplicationContext());
                 radioButton.setText(category);
-                radioGroup.addView(radioButton);
+                categoryRadioGroup.addView(radioButton);
             }
         }
 
-        mainLayout.addView(radioGroup);
+        mainLayout.addView(categoryRadioGroup);
     }
 
     void setButtons(){
@@ -140,7 +183,7 @@ public class NewTaskActivity extends AppCompatActivity {
         addTaskButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Task task = new Task(mainUser.getUid());
+                Task task = new Task(WebServiceHandler.getUID());
 
                 String nameString = ((EditText) findViewById(R.id.name_text)).getText().toString();
                 task.setName(nameString);
@@ -156,6 +199,10 @@ public class NewTaskActivity extends AppCompatActivity {
                 task.setDateDeadline(taskDeadline.getTimeInMillis());
                 task.setStatus(status);
 
+                RadioButton button = findViewById(categoryRadioGroup.getCheckedRadioButtonId());
+                String category = button.getText().toString();
+                task.setCategory(category);
+
                 activeStack.addTask(task);
                 activeStack.saveStack();
 
@@ -164,46 +211,5 @@ public class NewTaskActivity extends AppCompatActivity {
             }
         });
     }
-    public void onStatusButtonClicked(View view){
-        // Is the button now checked?
-        boolean checked = ((RadioButton) view).isChecked();
-
-        // Check which radio button was clicked
-        switch(view.getId()) {
-            case R.id.not_started_button:
-                if (checked){
-                    status = Task.NOT_STARTED;
-                }
-                break;
-            case R.id.started_button:
-                if (checked){
-                    status = Task.STARTED;
-                }
-                break;
-            case R.id.in_progress_button:
-                if (checked){
-                    status = Task.IN_PROGRESS;
-                }
-                break;
-            case R.id.testing_me_button:
-                if (checked){
-                    status = Task.TESTING_ME;
-                }
-                break;
-            case R.id.testing_ben_button:
-                if (checked){
-                    status = Task.TESTING_BEN;
-                }
-
-                break;
-            case R.id.finished_button:
-                if (checked){
-                    status = Task.FINISHED;
-                }
-                break;
-        }
-    }
-
-
 
 }
