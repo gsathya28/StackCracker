@@ -78,6 +78,67 @@
                 android:textAlignment="center"
                 android:textSize="18sp" />
 
+            <TextView
+                android:id="@+id/status_head"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingEnd="4dp"
+                android:paddingStart="6dp"
+                android:text="@string/status"
+                android:textColorHint="#000000"
+                android:textSize="18sp" />
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/status_radio"
+                android:checkedButton="@id/not_started_button">
+
+                <RadioButton
+                    android:id="@+id/not_started_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/not_started" />
+
+                <RadioButton
+                    android:id="@+id/started_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/started" />
+
+                <RadioButton
+                    android:id="@+id/in_progress_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/in_progress" />
+
+                <RadioButton
+                    android:id="@+id/testing_me_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/testing_me" />
+
+                <RadioButton
+                    android:id="@+id/testing_ben_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/testing_ben" />
+
+                <RadioButton
+                    android:id="@+id/finished_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/finished" />
+
+            </RadioGroup>
+
         </LinearLayout>
     </ScrollView>
 

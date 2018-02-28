@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -94,6 +96,42 @@ public class ViewTaskActivity extends AppCompatActivity {
         TextView dateTextView = findViewById(R.id.date_text);
         String dateString = "Deadline: " + task.getDateString();
         dateTextView.setText(dateString);
+
+        int status = task.getStatus();
+        RadioGroup statusRadioGroup = findViewById(R.id.status_radio);
+
+        RadioButton button = (RadioButton) statusRadioGroup.getChildAt(status);
+        button.setChecked(true);
+
+        statusRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                // Add edit code
+                switch(i) {
+                    case R.id.not_started_button:
+                        task.setStatus(Task.NOT_STARTED);
+                        break;
+                    case R.id.started_button:
+                        task.setStatus(Task.STARTED);
+                        break;
+                    case R.id.in_progress_button:
+                        task.setStatus(Task.IN_PROGRESS);
+                        break;
+                    case R.id.testing_me_button:
+                        task.setStatus(Task.TESTING_ME);
+                        break;
+                    case R.id.testing_ben_button:
+                        task.setStatus(Task.TESTING_BEN);
+                        break;
+                    case R.id.finished_button:
+                        task.setStatus(Task.FINISHED);
+                        break;
+                }
+
+                activeStack.addTask(task);
+                activeStack.saveStack();
+            }
+        });
     }
 
     void setButtons() {
