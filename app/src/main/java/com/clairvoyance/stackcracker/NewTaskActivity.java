@@ -40,6 +40,9 @@ public class NewTaskActivity extends AppCompatActivity {
     // Default RadioButton Status is Not Started Button
     int status = Task.NOT_STARTED;
 
+    DatabaseReference stackRef;
+    ValueEventListener stackGetter;
+
     DatePickerDialog.OnDateSetListener startDateDialogListener = new DatePickerDialog.OnDateSetListener() {
         @Override
         public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
@@ -68,8 +71,8 @@ public class NewTaskActivity extends AppCompatActivity {
             startActivity(backToLogin);
         }
 
-        DatabaseReference stackRef = WebServiceHandler.getRootRef().child(WebServiceHandler.STACK_IDENTIFIER);
-        ValueEventListener stackGetter = new ValueEventListener() {
+        stackRef = WebServiceHandler.getRootRef().child(WebServiceHandler.STACK_IDENTIFIER);
+        stackGetter = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 activeStack = dataSnapshot.getValue(Stack.class);
@@ -133,8 +136,10 @@ public class NewTaskActivity extends AppCompatActivity {
         myToolbar.setTitle("New Task");
         setSupportActionBar(myToolbar);
         ActionBar ab = getSupportActionBar();
+        if (ab != null){
+            ab.setDisplayHomeAsUpEnabled(true);
+        }
 
-        ab.setDisplayHomeAsUpEnabled(true);
     }
 
     void setLayout(){
@@ -148,12 +153,12 @@ public class NewTaskActivity extends AppCompatActivity {
 
         if(categories.isEmpty()){
             TextView noCategories = new TextView(getApplicationContext());
-            noCategories.setText("No Categories yet!");
+            noCategories.setText(R.string.no_categories_yet);
             mainLayout.addView(noCategories);
             // Maybe add a button to a dialog here??
         }else {
             RadioButton defaultButton = new RadioButton(getApplicationContext());
-            defaultButton.setText("No Category");
+            defaultButton.setText(R.string.no_category);
             categoryRadioGroup.addView(defaultButton);
             defaultButton.setChecked(true);
             for(String category: categories){
@@ -210,6 +215,12 @@ public class NewTaskActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        stackRef.removeEventListener(stackGetter);
+        super.onDestroy();
     }
 
 }

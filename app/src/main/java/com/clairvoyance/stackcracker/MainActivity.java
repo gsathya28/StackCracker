@@ -1,11 +1,9 @@
 package com.clairvoyance.stackcracker;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -16,19 +14,20 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
-import org.w3c.dom.Text;
-
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
@@ -36,8 +35,10 @@ public class MainActivity extends AppCompatActivity {
     User mainUser;
     Stack activeStack;
 
-    ListView mainList;
+    DatabaseReference stackRef;
+    ValueEventListener stackGetter;
 
+    ListView mainList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,8 +55,8 @@ public class MainActivity extends AppCompatActivity {
         setToolbar();
         mainList = findViewById(R.id.mainList);
 
-        DatabaseReference stackRef = WebServiceHandler.getRootRef().child(WebServiceHandler.STACK_IDENTIFIER);
-        ValueEventListener stackGetter = new ValueEventListener() {
+        stackRef = WebServiceHandler.getRootRef().child(WebServiceHandler.STACK_IDENTIFIER);
+        stackGetter = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 activeStack = dataSnapshot.getValue(Stack.class);
@@ -89,8 +90,6 @@ public class MainActivity extends AppCompatActivity {
         myToolbar.setTitle("The Stack: ");
         setSupportActionBar(myToolbar);
         // Get a support ActionBar corresponding to this toolbar
-
-        // Enable the Up button
     }
 
     public void setButtons(){
@@ -221,13 +220,25 @@ public class MainActivity extends AppCompatActivity {
         categoryList.setOrientation(LinearLayout.VERTICAL);
 
         TextView noteText = new TextView(MainActivity.this);
-        noteText.setText("Note: All tasks under a deleted category will be removed from that category!");
+        noteText.setText(R.string.delete_category_note);
         categoryList.addView(noteText);
 
+        final ArrayList<String> deleteCategories = new ArrayList<>();
+
         for (String category: activeStack.getCategories()){
-            CheckBox checkBox = new CheckBox(MainActivity.this);
+            final CheckBox checkBox = new CheckBox(MainActivity.this);
             checkBox.setText(category);
-            // Set on checkedChangeListener??
+            checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                    if(b){
+                        deleteCategories.add(checkBox.getText().toString());
+                    }
+                    else{
+                        deleteCategories.remove(checkBox.getText().toString());
+                    }
+                }
+            });
             categoryList.addView(checkBox);
         }
 
@@ -237,7 +248,20 @@ public class MainActivity extends AppCompatActivity {
         builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+                ArrayList<String> categories = activeStack.getCategories();
+                // Deletion of categories
+                categories.removeAll(deleteCategories);
+                activeStack.setCategories(categories);
+                activeStack.saveStack();
 
+                // Sift through Tasks - Check if this works
+                for(Task task: activeStack.getTasksAsList()){
+                    if(deleteCategories.contains(task.getCategory())){
+                        task.setCategory("No Category");
+                    }
+                }
+
+                Toast.makeText(getApplicationContext(), "Categories Deleted", Toast.LENGTH_SHORT).show();
             }
         });
         builder.setNegativeButton("Cancel", null);
@@ -248,6 +272,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         // Do nothing!
+    }
+
+    @Override
+    protected void onDestroy() {
+        stackRef.removeEventListener(stackGetter);
+        super.onDestroy();
     }
 
 }

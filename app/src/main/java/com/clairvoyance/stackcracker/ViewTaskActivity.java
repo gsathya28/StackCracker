@@ -24,6 +24,10 @@ public class ViewTaskActivity extends AppCompatActivity {
     Task task;
     Stack activeStack;
 
+    DatabaseReference stackRef;
+    ValueEventListener stackGetter;
+
+
     Toolbar myToolbar;
 
     @Override
@@ -31,11 +35,10 @@ public class ViewTaskActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_task);
 
-        // Will replace with Firebase Implementation w/ IDS
         taskID = getIntent().getStringExtra("taskID");
 
-        DatabaseReference stackRef = WebServiceHandler.getRootRef().child(WebServiceHandler.STACK_IDENTIFIER);
-        ValueEventListener stackGetter = new ValueEventListener() {
+        stackRef = WebServiceHandler.getRootRef().child(WebServiceHandler.STACK_IDENTIFIER);
+        stackGetter = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 activeStack = dataSnapshot.getValue(Stack.class);
@@ -73,8 +76,9 @@ public class ViewTaskActivity extends AppCompatActivity {
         myToolbar.setTitle("Task Name...");
         setSupportActionBar(myToolbar);
         ActionBar ab = getSupportActionBar();
-
-        ab.setDisplayHomeAsUpEnabled(true);
+        if (ab != null){
+            ab.setDisplayHomeAsUpEnabled(true);
+        }
     }
 
     void setLayout(){
@@ -141,6 +145,10 @@ public class ViewTaskActivity extends AppCompatActivity {
             public void onClick(View view) {
                 // Change the task state and save it in mainUser.
                 task.setStatus(Task.FINISHED);
+                activeStack.addTask(task);
+                activeStack.saveStack();
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
                 // Save task
             }
         });
@@ -153,5 +161,22 @@ public class ViewTaskActivity extends AppCompatActivity {
                 activeStack.removeTask(task.getId());
             }
         });
+
+        Button edit = findViewById(R.id.make_stack);
+        edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), EditTaskActivity.class);
+                intent.putExtra("taskID", taskID);
+                startActivity(intent);
+            }
+        });
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        stackRef.removeEventListener(stackGetter);
+        super.onDestroy();
     }
 }

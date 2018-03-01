@@ -45,7 +45,7 @@ class Task implements Serializable {
     void setDateDeadline(long dateDeadline) {
         this.dateDeadline = dateDeadline;
     }
-    public void setName(String name) {
+    void setName(String name) {
         this.name = name;
     }
     void setNotes(String notes) {
@@ -54,28 +54,22 @@ class Task implements Serializable {
     void setStatus(int status) {
         this.status = status;
     }
-    public void setCategory(String category) {
+    void setCategory(String category) {
         this.category = category;
     }
 
-    public String getId() {
+    String getId() {
         return id;
     }
-    public String getUsername() {
+    String getUsername() {
         return username;
-    }
-    public long getDateCreated() {
-        return dateCreated;
-    }
-    long getDateDeadline() {
-        return dateDeadline;
     }
     String getDateString(){
         Calendar taskDeadline = Calendar.getInstance();
         taskDeadline.setTimeInMillis(dateDeadline);
         return DateFormat.getDateInstance().format(taskDeadline.getTime());
     }
-    public String getName() {
+    String getName() {
         return name;
     }
     String getNotes() {
@@ -84,9 +78,18 @@ class Task implements Serializable {
     String getCategory(){
         return category;
     }
+
     int getStatus(){
         return status;
     }
+
+    long getDateCreated() {
+        return dateCreated;
+    }
+    long getDateDeadline() {
+        return dateDeadline;
+    }
+
 
     @Exclude
     String getStringStatus(){

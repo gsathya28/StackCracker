@@ -28,14 +28,10 @@ class Stack {
     void addCategory(String category){
         categories.add(category);
     }
-    void deleteCategory(String category){
-        categories.remove(category);
-        // More code to remove the events from the category...
 
-
+    void setCategories(ArrayList<String> categories){
+        this.categories = categories;
     }
-
-
 
     void addTask(Task task){
         if(task != null) {
@@ -53,6 +49,7 @@ class Stack {
     HashMap<String, Task> getTasks(){
         return tasks;
     }
+
     String getUid(){
         return uid;
     }
@@ -61,28 +58,7 @@ class Stack {
     ArrayList<Task> getTasksAsList(){
          return new ArrayList<>(tasks.values());
     }
-    @Exclude
-    int getCategoryIndexOf(String category){
-        int index = categories.indexOf(category);
-        if(index != -1){
-            return index;
-        }
-        else{
-            throw new IllegalArgumentException();
-        }
-    }
-    @Exclude
-    String getCategoryString(int index){
 
-        String category = categories.get(index);
-
-        if(category != null){
-            return category;
-        }
-        else{
-            throw new IllegalArgumentException();
-        }
-    }
     @Exclude
     void saveStack(){
         WebServiceHandler.editStack(this);
